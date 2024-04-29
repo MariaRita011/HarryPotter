@@ -142,21 +142,6 @@ app.delete("/bruxos/:id", async (req, res) => {
   }
 });
 
-app.get('/bruxos/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      const result = await pool.query('SELECT * FROM bruxos WHERE id = $1', [id]);
-      if (result.rowCount === 0) {
-        res.status(404).send({ mensagem: `Bruxo de ID: ${id} não encontrado! Tente novamente.` });
-      } else {
-        res.json(result.rows[0]);
-      }
-    } catch (error) {
-      console.error('Erro ao obter bruxo por ID.', error);
-      res.status(500).send('Erro ao obter usuário por ID.');
-    }
-  }); 
 
 
 
@@ -170,7 +155,7 @@ app.get("/varinhas", async (req, res) => {
     } else {
       res.json({
         total: result.rowCount,
-        bruxos: result.rows,
+        varinhas: result.rows,
       });
     }
   } catch (error) {
@@ -296,6 +281,22 @@ app.get('/bruxos/nome/:nome', async (req, res) => {
     res.status(500).send('Erro ao obter usuário por nome.');
   }
 });
+
+app.get('/varinhas/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query('SELECT * FROM varinhas WHERE id = $1', [id]);
+    if (result.rowCount === 0) {
+      res.status(404).send({ mensagem: `Varinha de ID: ${id} não encontrado! Tente novamente.` });
+    } else {
+      res.json(result.rows[0]);
+    }
+  } catch (error) {
+    console.error('Erro ao obter varinha por ID.', error);
+    res.status(500).send('Erro ao obter varinha por ID.');
+  }
+}); 
 
 // Inicie o servidor
 app.listen(PORT, () => {
